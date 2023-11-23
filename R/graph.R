@@ -235,9 +235,11 @@ bratteliGraph <- function(
     packages <- ""
   }
   # write code to template
-  template <- system.file("templateGraph.RDS", package = "bratteli")
-  texfile <- sprintf(readRDS(template), packages, Code)
-  writeLines(texfile, outfile)
+  templateFile <-
+    system.file("templateGraph", "templateGraph.tex", package = "bratteli")
+  template <- paste0(readLines(templateFile), collapse = "\n")
+  tex <- sprintf(template, packages, Code)
+  writeLines(tex, outfile)
   #return(connections)
   #return(paths)
   if(!is.null(colorpath)){

@@ -1,0 +1,56 @@
+\documentclass[12pt, border=0pt]{standalone}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb, amsmath}
+\usepackage{tikz}
+%s
+\thispagestyle{empty}
+
+\begin{document}
+
+\begin{tikzpicture}[x=10pt, y=6pt]
+  \centering
+  \tikzset{VertexStyle/.style = {
+    shape         = rectangle,
+    draw          = blue,
+    fill          = white,
+  	line width    = 1pt,
+    text          = black,
+    inner sep     = 1pt,
+    outer sep     = 0pt,
+    minimum size  = 14pt,
+    scale         = 1
+    }
+  }
+  \tikzset{EdgeStyle/.style = {
+    draw            = black,
+    thick,
+    double          = orange,
+    double distance = 1pt
+    }
+  }
+  \tikzset{EdgeStylePath/.style = {
+    draw            = black,
+    thick,
+    double          = blue,
+    double distance = 2pt
+    }
+  }
+  \tikzset{EdgeLabelStyle/.style = {
+    draw          = black,
+  	shape         = circle,
+  	line width    = 1pt,
+  	minimum size  = 10pt,
+    inner sep     = 1pt,
+    outer sep     = 0pt,
+    fill          = yellow,
+    text          = black,
+    scale         = 1
+    }
+  }
+
+%s
+
+\end{tikzpicture}
+
+\end{document}
