@@ -1,0 +1,16 @@
+Package: bratteli
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person("Stéphane", "Laurent", , "laurent_step@outlook.fr", role = c("aut", "cre"))
+Description: What the package does (one paragraph).
+License: GPL-3
+URL: https://github.com/stla/bratteli
+BugReports: https://github.com/stla/bratteli/issues
+Imports: 
+    data.table
+    diagram,
+    gmp,
+    kantorovich
+Encoding: UTF-8
+RoxygenNote: 7.2.3
