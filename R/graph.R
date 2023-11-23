@@ -19,7 +19,7 @@ if(getRversion() >= "2.15.1") {
 #'
 #' @export
 #' @importFrom gmp numerator denominator
-#' @importFrom data.table `:=` data.table
+#' @importFrom data.table `:=` data.table setnames
 #' @importFrom diagram coordinates
 #'
 #' @examples
@@ -60,11 +60,11 @@ bratteliGraph <- function(
   nvertices <- c(nvertices, ncol(Ms[[N]]))
   elpos <- coordinates(nvertices, relsize = 1, hor = !hor) # positions of vertices
   elpos <- data.table(elpos)
-  names(elpos) <- c("x", "y")
-  if(mirror){
+  setnames(elpos, c("x", "y"))
+  if(mirror) {
     if(!hor) elpos[, y := max(y)-y] else elpos[, x := max(x)-x]
   }
-  elpos[["level"]] <- rep(seq_along(nvertices), times = nvertices) - 1L
+  elpos[, level := rep(seq_along(nvertices), times = nvertices) - 1L]
   # scale
   elpos[, `:=`(x = scale[1]*x, y = scale[2]*y)]
   # node id's
@@ -78,10 +78,10 @@ bratteliGraph <- function(
       fvertexlabels <- function(n) dims[[n]]
     }
   }
-  elpos[["nodelabel"]] <- c(ROOTLABEL, lapply(1L:N, fvertexlabels))
-  if(LATEXIFY) elpos[, nodelabel:=paste0("$", nodelabel, "$")]
+  elpos[, nodelabel := c(ROOTLABEL, unlist(lapply(1L:N, fvertexlabels)))]
+  if(LATEXIFY) elpos[, nodelabel := paste0("$", nodelabel, "$")]
   # code for nodes
-  elpos[, code:=sprintf(
+  elpos[, code := sprintf(
     "\\node[VertexStyle](%s) at (%s, %s) {%s};", node, x, y, nodelabel
   )]
   # code for edges
@@ -235,7 +235,7 @@ bratteliGraph <- function(
     packages <- ""
   }
   # write code to template
-  template <- system.file("templates", "template_BratteliTikZ3.RDS", package="bratteli")
+  template <- system.file("templateGraph.RDS", package = "bratteli")
   texfile <- sprintf(readRDS(template), packages, Code)
   writeLines(texfile, outfile)
   #return(connections)

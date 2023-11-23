@@ -28,7 +28,7 @@ Pascal <- function(n) {
  }
  M
 }
-bratteliKernels(Mn, 4)
+bratteliKernels(Pascal, 4)
 
 # the Euler graph ####
 Euler <- function(n) {

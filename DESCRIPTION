@@ -8,9 +8,10 @@ License: GPL-3
 URL: https://github.com/stla/bratteli
 BugReports: https://github.com/stla/bratteli/issues
 Imports: 
-    data.table
+    data.table,
     diagram,
     gmp,
-    kantorovich
+    kantorovich,
+    utils
 Encoding: UTF-8
 RoxygenNote: 7.2.3

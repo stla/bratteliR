@@ -28,7 +28,7 @@ Pascal <- function(n) {
  }
  M
 }
-bratteliDistances(Mn, 4)
+bratteliDistances(Pascal, 4)
 
 # the Euler graph ####
 Euler <- function(n) {

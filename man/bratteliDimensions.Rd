@@ -28,7 +28,7 @@ Pascal <- function(n) {
  }
  M
 }
-bratteliDimensions(Mn, 4)
+bratteliDimensions(Pascal, 4)
 
 # the Euler graph ####
 Euler <- function(n) {

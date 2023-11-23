@@ -18,7 +18,7 @@
 #'  }
 #'  M
 #' }
-#' bratteliDimensions(Mn, 4)
+#' bratteliDimensions(Pascal, 4)
 #'
 #' # the Euler graph ####
 #' Euler <- function(n) {
@@ -35,7 +35,7 @@ bratteliDimensions <- function(Mn, N) {
   if(nrow(M) != 1L) stop("M0 must have one and only one row.")
   Dims[[1L]] <- dims0 <- c(M)
   for(k in seq_len(N-1)){
-    Dims[[k+1L]] <- dims0 <- c(dims0 %*% Mn.fun(k))
+    Dims[[k+1L]] <- dims0 <- c(dims0 %*% Mn(k))
   }
   Dims
 }
@@ -61,7 +61,7 @@ bratteliDimensions <- function(Mn, N) {
 #'  }
 #'  M
 #' }
-#' bratteliKernels(Mn, 4)
+#' bratteliKernels(Pascal, 4)
 #'
 #' # the Euler graph ####
 #' Euler <- function(n) {
@@ -121,7 +121,7 @@ bratteliKernels <- function(Mn, N) {
 #'  }
 #'  M
 #' }
-#' bratteliDistances(Mn, 4)
+#' bratteliDistances(Pascal, 4)
 #'
 #' # the Euler graph ####
 #' Euler <- function(n) {
