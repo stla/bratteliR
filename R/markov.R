@@ -8,6 +8,7 @@
 #'
 #' @return The dimensions of the vertices in a list.
 #' @export
+#' @importFrom gmp as.bigz
 #'
 #' @examples
 #' # the Pascal graph ####
@@ -32,16 +33,18 @@
 bratteliDimensions <- function(Mn, N) {
   Dims <- vector("list", N)
   M <- Mn(0)
-  if(nrow(M) != 1L) stop("M0 must have one and only one row.")
-  Dims[[1L]] <- dims0 <- c(M)
+  if(nrow(M) != 1L) stop("Mn(0) must have one and only one row.")
+  dims0 <- as.bigz(M)
+  Dims[[1L]] <- as.character(M)
   for(k in seq_len(N-1)){
-    Dims[[k+1L]] <- dims0 <- c(dims0 %*% Mn(k))
+    dims0 <- gmp::`%*%`(dims0, as.bigz(Mn(k)))
+    Dims[[k+1L]] <- as.character(c(dims0))
   }
   Dims
 }
 
 #' @title Bratteli kernels
-#' @description Central kernels of a Brattelii graph.
+#' @description Central kernels of a Bratteli graph.
 #'
 #' @param Mn a function returning for each integer \code{n} the incidence
 #' matrix between levels \code{n} and \code{n+1}; the matrix \code{Mn(0)}
@@ -77,15 +80,15 @@ bratteliKernels <- function(Mn, N) {
   M <- Mn(0)
   m <- nrow(M)
   n <- ncol(M)
-  if(m != 1L) stop("M0 must have one and only one row.")
+  if(m != 1L) stop("Mn(0) must have one and only one row.")
   dims0 <-  c(as.bigz(M))
   Kernels[[1L]] <- matrix(as.character(dims0), dimnames = list(1L:n, 1L:m))
-  for(k in 1:(N-1)) {
-    M <- Mn(k)
+  for(k in 1L:(N-1)) {
+    M <- as.bigz(Mn(k))
     m <- nrow(M)
     n <- ncol(M)
-    S <- lapply(1L:ncol(M), function(i) which(M[, i] != 0))
-    dims <- c(dims0 %*% M)
+    S <- lapply(1L:ncol(M), function(i) which(M[, i] != 0L))
+    dims <- c(gmp::`%*%`(dims0, M))
     P <- lapply(1L:n, function(i) {
       as.character(dims0[S[[i]]] * M[S[[i]], i] / dims[i])
     })

@@ -30,7 +30,8 @@ if(getRversion() >= "2.15.1") {
 #' @param bending curvature when there are multiple edges
 #' @param hor Boolean, whether to render a horizontal graph
 #' @param mirror Boolean, whether to "reverse" the graph
-#' @param northsouth node connections ??????????
+#' @param northsouth Boolean, whether to draw the edges with endpoints at the
+#'   bottom and the top of the vertex labels
 #'
 #' @export
 #' @importFrom gmp numerator denominator
@@ -60,11 +61,11 @@ bratteliGraph <- function(
   packages <- NULL
   stopifnot(
     is.function(edgelabels) || is.na(edgelabels) ||
-      match.arg(edgelabels, c("default", "letters", "order", "kernels"))
+      edgelabels %in% c("default", "letters", "order", "kernels")
   )
   stopifnot(
     is.function(vertexlabels) || is.na(vertexlabels) ||
-      match.arg(vertexlabels, c("colnames", "dims"))
+      vertexlabels %in% c("colnames", "dims")
   )
   Ms <- lapply(0L:(N-1), Mn)
   for(i in 1L:N){
@@ -264,7 +265,7 @@ bratteliGraph <- function(
   writeLines(tex, outfile)
   #return(connections)
   #return(paths)
-  if(!is.null(colorpath)){
+  if(!is.na(colorpath)){
     return(invisible(paths))
   }
   return(invisible())
