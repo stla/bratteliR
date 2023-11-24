@@ -45,17 +45,6 @@ if(getRversion() >= "2.15.1") {
 #' @importFrom data.table `:=` data.table setnames
 #' @importFrom diagram coordinates
 #' @importFrom utils tail
-#'
-#' @examples
-#' Pascal_Mn <- function(n){
-#'  M <- matrix(0, nrow=n+1, ncol=n+2)
-#'  for(i in 1:(n+1)){
-#'    M[i, ][c(i, i+1)] <- 1
-#'  }
-#'  return(M)
-#' }
-#' BgraphTikZ("/tmp/PascalGraph.tex", Pascal_Mn, 3)
-#'
 bratteliGraph <- function(
     outfile = "bratteli.tex", Mn, N,
     edgelabels = NA,

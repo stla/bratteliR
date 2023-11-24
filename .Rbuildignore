@@ -3,3 +3,4 @@
 ^\.github$
 ^inst/essais$
 ^inst/graphs$
+^README\.Rmd$

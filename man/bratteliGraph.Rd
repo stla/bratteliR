@@ -62,14 +62,3 @@ bottom and the top of the vertex labels}
 Generate a LaTeX file containing TikZ code that renders a
   picture of a Bratteli graph.
 }
-\examples{
-Pascal_Mn <- function(n){
- M <- matrix(0, nrow=n+1, ncol=n+2)
- for(i in 1:(n+1)){
-   M[i, ][c(i, i+1)] <- 1
- }
- return(M)
-}
-BgraphTikZ("/tmp/PascalGraph.tex", Pascal_Mn, 3)
-
-}
