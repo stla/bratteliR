@@ -50,7 +50,7 @@ if(getRversion() >= "2.15.1") {
 #'
 bratteliGraph <- function(
     outfile = "bratteli.tex", Mn, N,
-    edgelabels = "default",
+    edgelabels = NA,
     vertexlabels = "colnames",
     colorpath = NA,
     rootlabel = "\\varnothing", latex = TRUE,
