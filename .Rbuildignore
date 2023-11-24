@@ -1,2 +1,5 @@
 ^bratteli\.Rproj$
 ^\.Rproj\.user$
+^\.github$
+^inst/essais$
+^inst/graphs$

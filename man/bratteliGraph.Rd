@@ -8,7 +8,7 @@ bratteliGraph(
   outfile = "bratteli.tex",
   Mn,
   N,
-  edgelabels = "default",
+  edgelabels = NA,
   vertexlabels = "colnames",
   colorpath = NA,
   rootlabel = "\\\\varnothing",
