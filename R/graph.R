@@ -12,7 +12,9 @@ if(getRversion() >= "2.15.1") {
   )
 }
 
-#' Generate TikZ code of a Bratteli graph
+#' @title LaTeX code drawing a Bratteli graph
+#' @description Generate a LaTeX file containing TikZ code that renders a
+#'   picture of a Bratteli graph.
 #'
 #' @param outfile path to the output file
 #' @param Mn a function returning for each integer \code{n} the incidence

@@ -2,7 +2,7 @@
 % Please edit documentation in R/graph.R
 \name{bratteliGraph}
 \alias{bratteliGraph}
-\title{Generate TikZ code of a Bratteli graph}
+\title{LaTeX code drawing a Bratteli graph}
 \usage{
 bratteliGraph(
   outfile = "bratteli.tex",
@@ -59,7 +59,8 @@ for level \code{n} the vector of labels at the \code{n}-th level}
 bottom and the top of the vertex labels}
 }
 \description{
-Generate TikZ code of a Bratteli graph
+Generate a LaTeX file containing TikZ code that renders a
+  picture of a Bratteli graph.
 }
 \examples{
 Pascal_Mn <- function(n){
