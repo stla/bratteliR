@@ -11,4 +11,4 @@ Pascal <- function(n) {
   M
 }
 
-bratteliGraph("Pascal.tex", Pascal, 3)
+bratteliGraph("Pascal-kernels.tex", Pascal, 3, edgelabels = "kernels")

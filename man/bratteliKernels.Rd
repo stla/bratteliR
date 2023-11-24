@@ -17,7 +17,7 @@ must have one and only one row}
 The kernels in a list.
 }
 \description{
-Central kernels of a Brattelii graph.
+Central kernels of a Bratteli graph.
 }
 \examples{
 # the Pascal graph ####

@@ -34,7 +34,7 @@ if(getRversion() >= "2.15.1") {
 #'   bottom and the top of the vertex labels
 #'
 #' @export
-#' @importFrom gmp numerator denominator
+#' @importFrom gmp numerator denominator as.bigq
 #' @importFrom data.table `:=` data.table setnames
 #' @importFrom diagram coordinates
 #'
@@ -148,12 +148,13 @@ bratteliGraph <- function(
       if(!is.element("nicefrac", packages)) packages <- c(packages, "nicefrac")
       ckernels <- bratteliKernels(Mn, N)
       ckernels_numer <- lapply(ckernels, function(x) {
-        as.character(numerator(x))
+        as.character(numerator(as.bigq(x)))
       })
       ckernels_denom <- lapply(ckernels, function(x) {
-        as.character(denominator(x))
+        as.character(denominator(as.bigq(x)))
       })
       f <- Vectorize(function(level, from, to){
+        if(ckernels_numer[[level+1L]][to, from] == "0") return("0")
         if(ckernels_denom[[level+1L]][to, from] == "1") return("1")
         sprintf(
           "\\nicefrac{%s}{%s}",
