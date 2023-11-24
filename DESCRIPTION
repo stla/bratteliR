@@ -1,6 +1,6 @@
 Package: bratteli
 Title: Bratteli graphs
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: 
     person("Stéphane", "Laurent", , "laurent_step@outlook.fr", role = c("aut", "cre"))
 Description: Deals with Bratteli graphs. A tree is an example of Bratteli
