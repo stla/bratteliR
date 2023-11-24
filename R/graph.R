@@ -9,13 +9,28 @@ if(getRversion() >= "2.15.1") {
 
 #' Generate TikZ code of a Bratteli graph
 #'
-#' @param edgelabels \code{"default"}, \code{"default_letters"},
-#'   \code{"order"}, \code{"kernels"}, \code{NA}, or a VECTORIZED function
-#' @param vertexlabels \code{"colnames"} (default) to use the column names of
-#'   the matrices, \code{"dims"} to use the dimensions of the vertices,
-#'   or a VECTORIZED(?) function
+#' @param outfile path to the output file
+#' @param Mn a function returning for each integer \code{n} the incidence
+#' matrix between levels \code{n} and \code{n+1}; the matrix \code{Mn(0)}
+#' must have one and only one row
+#' @param N the level up to which the graph is wanted
+#' @param edgelabels \code{"default"}, \code{"letters"}, \code{"order"},
+#'   \code{"kernels"}, \code{NA}, or a \emph{vectorized} function with
+#'   four arguments: the level of the graph, the index of the "from" vertex,
+#'   the index of the "to" vertex, and the index of the edge among the
+#'   multiple edges, if there are multiple edges
+#' @param vertexlabels \code{"colnames"} to use the column names of the
+#'   matrices, \code{"dims"} to use the dimensions of the vertices, \code{NA},
+#'   or a function with one argument, the level of the graph, returning
+#'   for level \code{n} the vector of labels at the \code{n}-th level
+#' @param colorpath an index of a path to be colored, or \code{NA}
+#' @param rootlabel a label for the root vertex of the graph
+#' @param latex Boolean, whether to enclose all labels between dollars
+#' @param xscale,yscale scaling factors for the graph
 #' @param bending curvature when there are multiple edges
-#' @param northsouth node connections
+#' @param hor Boolean, whether to render a horizontal graph
+#' @param mirror Boolean, whether to "reverse" the graph
+#' @param northsouth node connections ??????????
 #'
 #' @export
 #' @importFrom gmp numerator denominator
@@ -33,18 +48,25 @@ if(getRversion() >= "2.15.1") {
 #' BgraphTikZ("/tmp/PascalGraph.tex", Pascal_Mn, 3)
 #'
 bratteliGraph <- function(
-    outfile, Mn, N,
+    outfile = "bratteli.tex", Mn, N,
     edgelabels = "default",
     vertexlabels = "colnames",
-    fvertexlabels = NULL,
-    colorpath = NULL,
-    ROOTLABEL = "\\varnothing", LATEXIFY=TRUE,
-    packages = NULL,
-    scale = c(50,50), bending = 1,
+    colorpath = NA,
+    rootlabel = "\\varnothing", latex = TRUE,
+    xscale = 50, yscale = 50, bending = 1,
     hor = FALSE, mirror = FALSE,
     northsouth = FALSE
 ) {
-  Ms <- lapply(0:(N-1), Mn)
+  packages <- NULL
+  stopifnot(
+    is.function(edgelabels) || is.na(edgelabels) ||
+      match.arg(edgelabels, c("default", "letters", "order", "kernels"))
+  )
+  stopifnot(
+    is.function(vertexlabels) || is.na(vertexlabels) ||
+      match.arg(vertexlabels, c("colnames", "dims"))
+  )
+  Ms <- lapply(0L:(N-1), Mn)
   for(i in 1L:N){
     if(is.null(colnames(Ms[[i]]))) {
       colnames(Ms[[i]]) <- seq_len(ncol(Ms[[i]]))
@@ -66,20 +88,21 @@ bratteliGraph <- function(
   }
   elpos[, level := rep(seq_along(nvertices), times = nvertices) - 1L]
   # scale
-  elpos[, `:=`(x = scale[1]*x, y = scale[2]*y)]
+  elpos[, `:=`(x = xscale*x, y = yscale*y)]
   # node id's
   elpos[, `:=`(node = ids(.N, LETTERS[level[1L]+1L])), by = "level"]
-  if(is.null(fvertexlabels) && is.character(vertexlabels)){
+  if(is.na(vertexlabels)) {
+    fvertexlabels <- function(n) rep("", ncol(Ms[[n]]))
+  } else if(is.character(vertexlabels)){
     if(vertexlabels == "colnames") {
       fvertexlabels <- function(n) colnames(Ms[[n]])
-    }
-    if(vertexlabels == "dims"){
+    } else if(vertexlabels == "dims"){
       dims <- bratteliDimensions(Mn, N)
       fvertexlabels <- function(n) dims[[n]]
     }
   }
-  elpos[, nodelabel := c(ROOTLABEL, unlist(lapply(1L:N, fvertexlabels)))]
-  if(LATEXIFY) elpos[, nodelabel := paste0("$", nodelabel, "$")]
+  elpos[, nodelabel := c(rootlabel, unlist(lapply(1L:N, fvertexlabels)))]
+  if(latex) elpos[, nodelabel := paste0("$", nodelabel, "$")]
   # code for nodes
   elpos[, code := sprintf(
     "\\node[VertexStyle](%s) at (%s, %s) {%s};", node, x, y, nodelabel
@@ -116,7 +139,7 @@ bratteliGraph <- function(
     labels_on_edge <- TRUE
     if(edgelabels == "default") {
       connections[, edgelabel := seq_along(to)-1L, by = node1]
-    } else if(edgelabels == "default_letters") {
+    } else if(edgelabels == "letters") {
       connections[, edgelabel:=letters[seq_along(to)], by = node1]
     } else if(edgelabels == "order") {
       connections[, edgelabel := seq_len(.N)-1L, by = node2]
@@ -139,12 +162,10 @@ bratteliGraph <- function(
       })
       connections[, edgelabel := f(level, from, to)]
     }
-  }
-  if(is.function(edgelabels)){
+  } else if(is.function(edgelabels)){
     labels_on_edge <- TRUE
     connections[, edgelabel := edgelabels(level, from, to, mindex)]
-  }
-  if(is.atomic(edgelabels) && is.na(edgelabels)){
+  } else {
     labels_on_edge <- FALSE
   }
   # curvatures
@@ -155,7 +176,8 @@ bratteliGraph <- function(
   }
   connections[, bend := fbend(.N), by = "id"]
   # paths
-  if(!is.null(colorpath)){
+  if(!is.na(colorpath)){
+    colorpath <- as.integer(colorpath)
     dd <- as.data.frame(connections)
     ff <- function(e) {
       e1 <- which(dd[["node1"]] == dd[["node2"]][e]) # edges connected to edge i
@@ -190,7 +212,7 @@ bratteliGraph <- function(
   connections[, path := path]
   #
   if(labels_on_edge) {
-    if(LATEXIFY) connections[, edgelabel := paste0("$", edgelabel, "$")]
+    if(latex) connections[, edgelabel := paste0("$", edgelabel, "$")]
     drawcode <- Vectorize(function(bend) {
       if(is.na(bend)) {
         return(ifelse(
