@@ -4,7 +4,12 @@ ids <- function(I, prefix) {
 }
 
 if(getRversion() >= "2.15.1") {
-  utils::globalVariables(c(".N", "node1", "node2"))
+  utils::globalVariables(
+    c(
+      ".N", "node1", "node2", "bend", "code", "edgelabel", "id", "level",
+      "mindex", "node", "nodelabel", "x", "y"
+    )
+  )
 }
 
 #' Generate TikZ code of a Bratteli graph
@@ -37,6 +42,7 @@ if(getRversion() >= "2.15.1") {
 #' @importFrom gmp numerator denominator as.bigq
 #' @importFrom data.table `:=` data.table setnames
 #' @importFrom diagram coordinates
+#' @importFrom utils tail
 #'
 #' @examples
 #' Pascal_Mn <- function(n){
