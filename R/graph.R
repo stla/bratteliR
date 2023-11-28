@@ -40,6 +40,8 @@ if(getRversion() >= "2.15.1") {
 #' @param northsouth Boolean, whether to draw the edges with endpoints at the
 #'   bottom and the top of the vertex labels
 #'
+#' @return No return value; called to generate the LaTeX file.
+#'
 #' @export
 #' @importFrom gmp numerator denominator as.bigq
 #' @importFrom data.table `:=` data.table setnames

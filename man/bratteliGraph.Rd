@@ -58,6 +58,9 @@ for level \code{n} the vector of labels at the \code{n}-th level}
 \item{northsouth}{Boolean, whether to draw the edges with endpoints at the
 bottom and the top of the vertex labels}
 }
+\value{
+No return value; called to generate the LaTeX file.
+}
 \description{
 Generate a LaTeX file containing TikZ code that renders a
   picture of a Bratteli graph.
