@@ -5,7 +5,7 @@
 \title{LaTeX code drawing a Bratteli graph}
 \usage{
 bratteliGraph(
-  outfile = "bratteli.tex",
+  outfile,
   Mn,
   N,
   edgelabels = NA,

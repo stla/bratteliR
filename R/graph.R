@@ -48,7 +48,7 @@ if(getRversion() >= "2.15.1") {
 #' @importFrom diagram coordinates
 #' @importFrom utils tail
 bratteliGraph <- function(
-    outfile = "bratteli.tex", Mn, N,
+    outfile, Mn, N,
     edgelabels = NA,
     vertexlabels = "colnames",
     colorpath = NA,
